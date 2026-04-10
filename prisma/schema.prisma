@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+// Enums
+enum Role {
+  USER
+  ADMIN
+}
+
+enum TokenType {
+  REFRESH
+  EMAIL_VERIFY
+  PASSWORD_RESET
+}
+
+// Models
+model User {
+  id               String    @id @default(uuid())
+  email            String?   @unique
+  password         String?
+  name             String?
+  emailVerified    DateTime? @map("email_verified") // @map is custom table name
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  role             Role      @default(USER) // default value from enum Role "USER"
+  tokens           Token[]
+}
+
+model Token {
+  id         String     @id @default(uuid())
+  type       TokenType
+  token      String     @unique
+  expiresAt  DateTime
+  createdAt  DateTime   @default(now())
+  consumedAt DateTime?
+  revokedAt  DateTime?
+
+  userId     String
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type])
+}
