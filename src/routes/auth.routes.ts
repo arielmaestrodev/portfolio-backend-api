@@ -13,5 +13,6 @@ router.post("/v1/login", validateSchema(loginSchema), authController.login);
 router.get("/v1/verify-email", validateSchema(verifyEmailSchema), authController.verifyEmail);
 router.post("/v1/resend-email-verification", validateSchema(resendVerificationSchema), authController.resendEmailVerification);
 router.post("/v1/refresh-token", validateSchema(refreshTokenSchema), authController.refresh);
+router.post("/v1/logout", authController.logout);
 
 export default router;
