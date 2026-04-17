@@ -30,6 +30,24 @@ model User {
 
   role             Role      @default(USER) // default value from enum Role "USER"
   tokens           Token[]
+  blogs            Blog[]
+}
+
+model Blog {
+  id        String   @id @default(uuid())
+  slug      String   @unique
+  title     String
+  excerpt   String
+  content   String   @db.Text
+  category  String[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([slug])
 }
 
 model Token {

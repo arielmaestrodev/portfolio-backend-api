@@ -1,5 +1,5 @@
-export { SignupUserService } from "./signup-user";
-export { VerifyEmailService } from "./verify-email";
-export { LoginCredentialsService } from "./login-credentials";
-export { RefreshTokenService } from "./refresh-token";
-export { ResendEmailVerificationService } from "./resend-email-verification";
+export { SignupUserService } from "./signup-user-service";
+export { VerifyEmailService } from "./verify-email-service";
+export { LoginCredentialsService } from "./login-credentials-service";
+export { RefreshTokenService } from "./refresh-token-service";
+export { ResendEmailVerificationService } from "./resend-email-verification-service";
