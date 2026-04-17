@@ -1,4 +1,4 @@
-import { BlogRepository } from "@/repositories/blog.repository";
+import { BlogRepository, BlogData } from "@/repositories/blog.repository";
 
 interface UpdateBlogData {
   id: string;
@@ -24,7 +24,7 @@ export async function UpdateBlogService(data: UpdateBlogData) {
       return { code: 403, status: "error", message: "You are not authorized to edit this post" };
     }
 
-    const updateData: any = {
+    const updateData: Partial<BlogData> = {
       title: data.title,
       content: data.content,
       excerpt: data.excerpt,
