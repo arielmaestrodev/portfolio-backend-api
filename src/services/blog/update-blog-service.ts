@@ -1,4 +1,5 @@
 import { BlogRepository, BlogData } from "@/repositories/blog.repository";
+import { generateEmbedding } from "@/services/ai/core/gemini-service";
 
 interface UpdateBlogData {
   id: string;
@@ -44,6 +45,12 @@ export async function UpdateBlogService(data: UpdateBlogData) {
        if (slugExists && slugExists.id !== data.id) {
          updateData.slug = `${updateData.slug}-${Date.now()}`;
        }
+    }
+
+    // Re-generate embedding if content changed
+    if (data.content && data.content !== existing.content) {
+      const embedding = await generateEmbedding(data.content);
+      updateData.embedding = `[${embedding.join(",")}]`;
     }
 
     const blog = await blogRepository.update(data.id, updateData);

@@ -1,4 +1,5 @@
 import { BlogRepository } from "@/repositories/blog.repository";
+import { generateEmbedding } from "@/services/ai/core/gemini-service";
 
 interface CreateBlogData {
   title: string;
@@ -23,6 +24,10 @@ export async function CreateBlogService(data: CreateBlogData) {
     const existing = await blogRepository.findBySlug(slug);
     const finalSlug = existing ? `${slug}-${Date.now()}` : slug;
 
+    // Generate embedding for RAG
+    const embedding = await generateEmbedding(data.content);
+    const vectorStr = `[${embedding.join(",")}]`;
+
     // Create Blog
     const blog = await blogRepository.create({
       title: data.title,
@@ -31,6 +36,7 @@ export async function CreateBlogService(data: CreateBlogData) {
       category: data.category || [],
       slug: finalSlug,
       authorId: data.authorId,
+      embedding: vectorStr,
     });
 
     return {

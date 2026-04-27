@@ -44,6 +44,8 @@ model Blog {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  embedding Unsupported("vector(768)")? // Gemini embedding dimension is 768
+
   authorId  String
   author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
@@ -63,4 +65,21 @@ model Token {
   user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, type])
+}
+
+model KnowledgeBase {
+  id        String   @id @default(uuid())
+  question  String?  @unique
+  answer    String   @db.Text
+  category  String?
+  tags      String[]
+  metadata  Json?    // Flexible field for extra AI context or source info
+  embedding Unsupported("vector(768)")? // Gemini embedding dimension is 768
+  
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@index([question])
 }

@@ -9,6 +9,7 @@ export const ENV = {
   JWT_SECRET: process.env.JWT_SECRET || 'fallback_secret_change_me',
   FRONTEND_URL: process.env.FRONTEND_URL || 'http://localhost:3000',
   BACKEND_URL: process.env.BACKEND_URL || 'http://localhost:8000',
+  GEMINI_API_KEY: process.env.GEMINI_API_KEY,
   
   SMTP: {
     HOST: process.env.SMTP_HOST,

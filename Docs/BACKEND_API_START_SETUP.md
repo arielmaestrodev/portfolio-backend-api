@@ -140,8 +140,30 @@ We use Prisma with a custom output location to keep our `src` folder as the sing
 
 ---
 
-## 🚀 Step 8: Deployment Ready
-Before pushing to production, always ensure `tsc-alias` is used in your build script to resolve the `@/` path shortcuts in the compiled JavaScript.
+## 🚀 Step 8: Commands & Deployment
+
+### Database Management
+If you add new models to `schema.prisma`, you must regenerate the client and apply the changes:
 ```bash
+# Generate the Prisma client
+npm run db:generate
+
+# Apply migrations to the database
+npm run db:migrate
+```
+
+### Development
+Start the project in development mode with hot-reloading:
+```bash
+npm run dev
+```
+
+### Production
+To build and start the project for production:
+```bash
+# 1. Compile TypeScript and resolve @/ aliases
 npm run build
+
+# 2. Start the compiled JavaScript in the dist/ folder
+npm run start
 ```

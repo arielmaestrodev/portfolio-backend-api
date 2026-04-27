@@ -1,63 +1,86 @@
 # 🚀 Portfolio Backend API
 
-A production-ready, highly secure REST API built with **Node.js**, **Express**, and **TypeScript**. This project features a robust authentication system, database-backed token management, and strict data validation.
+A production-ready, enterprise-grade REST API built with **Node.js**, **Express**, and **TypeScript**. This project features a sophisticated AI-powered RAG system, role-based security, and advanced database relationships.
 
 ## ✨ Core Features
-- **Modern Authentication**: Signup, Login, and secure Token Rotation.
-- **Email Verification**: Built-in verification flow via Nodemailer with HTML templates.
-- **Stateless Security**: JWT-based access tokens with strict `type` checks.
-- **Database Tracking**: Refresh tokens are tracked in PostgreSQL for revocation and security audits.
-- **Strict Validation**: All endpoints protected by **Zod** schema validation.
-- **Premium DX**: Path aliases (`@/`), singleton Prisma client, and centralized config management.
+- **🧠 AI-Powered RAG**: Integrated Google Gemini AI using Retrieval-Augmented Generation (RAG) to answer questions based on your specific Knowledge Base and Blog posts.
+- **🛡️ RBAC Security**: Granular Role-Based Access Control (ADMIN, USER) with dedicated middlewares for protected resources.
+- **🔐 Modern Auth**: Secure Signup, Login, and automatic Token Rotation with database-backed session tracking.
+- **📝 Content Management**: Full CRUD systems for Blogs and Knowledge Base entries, including automated AI indexing.
+- **📧 Email Services**: Built-in verification flow and HTML templates via Nodemailer.
+- **📐 Semantic Search**: High-performance vector similarity search using PostgreSQL `pgvector`.
+- **✅ Strict Validation**: 100% endpoint coverage with **Zod** schema validation.
 
 ## 🛠️ Technologies Used
-- **Runtime**: Node.js (v20+)
-- **Language**: TypeScript
-- **Framework**: Express 5.x
+- **AI**: Google Generative AI (Gemini 2.5)
+- **Database**: PostgreSQL with `pgvector` (Vector Embeddings)
 - **ORM**: Prisma (PostgreSQL)
+- **Runtime**: Node.js (v20+) & TypeScript
+- **Framework**: Express 5.x
 - **Validation**: Zod
-- **Auth**: JSON Web Tokens (JWT)
-- **Execution**: `tsx` (High-performance TS runner)
-- **Deployment Build**: `tsc-alias` (For path shortcut resolution)
+- **Auth**: JSON Web Tokens (JWT) & `bcrypt`
 
-## 📁 Project Structure
+## 📁 Project Structure Highlights
 ```text
 src/
-├── config/         # App configuration & environment logic
-├── controllers/    # Request handlers (Parsing & Response)
-├── generated/      # Auto-generated Prisma Client
-├── lib/            # Shared libraries (JWT, Prisma Singleton)
-├── middlewares/    # Custom Express middlewares (Zod Validation)
-├── repositories/   # Data Access Layer (Prisma Queries)
-├── routes/         # Endpoint definitions
-├── schema/         # Zod schemas for request validation
-├── services/       # Core Business Logic
-├── utils/          # Independent helper functions (Hashing, etc.)
-├── app.ts          # App configuration
-└── server.ts       # Entry point
+├── controllers/    # AI, Blog, and Auth request handlers
+├── repositories/   # Data Access Layer (Prisma & Vector SQL)
+├── routes/         # RBAC-protected route definitions
+├── schema/         # Zod schemas for AI and Auth validation
+├── services/       # Core Logic (Gemini API, RAG, Auth flows)
+└── ...
 ```
 
-## ⚙️ Installation & Setup
+## 📡 API Endpoints
 
-> [!NOTE]
-> For a more detailed, step-by-step walkthrough on how I initialized this project from scratch, please refer to the [Detailed Setup Guide](Docs/1-How-to-start-backend-api-project.md).
+### 🤖 AI Assistant (Public)
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/ai/v1/ask` | Chat with Ariel Batoon (RAG + General Dev) |
 
-## 📡 API Endpoints (Auth)
-
+### 🔑 Authentication
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
 | `POST` | `/api/auth/v1/signup` | Register a new account |
 | `POST` | `/api/auth/v1/login` | Authenticate and receive tokens |
 | `GET` | `/api/auth/v1/verify-email` | Verify account via email token |
+| `POST` | `/api/auth/v1/resend-email-verification` | Resend verification email |
 | `POST` | `/api/auth/v1/refresh-token` | Rotate session tokens |
-| `POST` | `/api/auth/v1/resend-email` | Resend verification email |
+| `POST` | `/api/auth/v1/logout` | Revoke tokens and logout |
+
+### 📝 Blog
+| Method | Endpoint | Description | Access |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/blog/v1/all-posts` | Fetch all blog posts | Public |
+| `GET` | `/api/blog/v1/post/:id` | Fetch a single post by ID | Public |
+| `POST` | `/api/blog/v1/create-post` | Create and index a new post | Admin |
+| `POST` | `/api/blog/v1/update-post` | Update post and re-index vector | Admin |
+| `DELETE` | `/api/blog/v1/delete-post/:id` | Delete a blog post | Admin |
+
+### 📚 Knowledge Base (Admin Only)
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/kb/v1/all` | Fetch all knowledge base entries |
+| `POST` | `/api/kb/v1/create` | Create and index a new knowledge entry |
+| `PATCH` | `/api/kb/v1/:id` | Update knowledge and re-index vector |
+| `DELETE` | `/api/kb/v1/:id` | Remove an entry from the knowledge base |
+
+## ⚙️ Documentation
+For detailed guides on implementation and setup, check the `Docs/` folder:
+- [Detailed Setup Guide](Docs/BACKEND_API_START_SETUP.md)
+- [Gemini AI Implementation (RAG)](Docs/GEMINI_AI_IMPLEMENTATION.md)
 
 ---
 
 ## 🏗️ Build & Production
-To compile the project for production:
 ```bash
+# 1. Apply migrations & Generate Client
+npm run db:migrate
+npm run db:generate
+
+# 2. Build for production
 npm run build
+
+# 3. Start server
 npm start
 ```
-*Note: The build process uses `tsc-alias` to ensure path shortcuts like `@/` work in the compiled JavaScript output.*
