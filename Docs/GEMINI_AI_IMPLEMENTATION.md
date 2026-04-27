@@ -4,6 +4,17 @@ This document provides a deep dive into how we integrated Google Gemini AI into 
 
 ---
 
+## ⚙️ Installation & Setup
+
+To get started with this implementation, you need to install the following core packages:
+
+```powershell
+# Google Gemini AI SDK
+npm install @google/generative-ai
+```
+
+---
+
 ## 🧠 1. The Core Concept: Brain vs. Library
 
 Think of the implementation in two parts:

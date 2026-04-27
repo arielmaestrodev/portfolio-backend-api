@@ -69,6 +69,7 @@ src/
 For detailed guides on implementation and setup, check the `Docs/` folder:
 - [Detailed Setup Guide](Docs/BACKEND_API_START_SETUP.md)
 - [Gemini AI Implementation (RAG)](Docs/GEMINI_AI_IMPLEMENTATION.md)
+- [Modern Build & Linting Setup](Docs/SETUP_BUILD_AND_LINT.md)
 
 ---
 
