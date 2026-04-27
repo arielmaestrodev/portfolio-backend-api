@@ -18,17 +18,16 @@ A production-ready, enterprise-grade REST API built with **Node.js**, **Express*
 - **Runtime**: Node.js (v20+) & TypeScript
 - **Framework**: Express 5.x
 - **Validation**: Zod
-- **Auth**: JSON Web Tokens (JWT) & `bcrypt`
+- **Auth**: JSON Web Tokens (JWT) & `crypto`
 
 ## 📁 Project Structure Highlights
 ```text
 src/
-├── controllers/    # AI, Blog, and Auth request handlers
-├── repositories/   # Data Access Layer (Prisma & Vector SQL)
+├── controllers/    # AI, Blog, Knowledge Base, and Auth request handlers
+├── repositories/   # Data Access Layer (CRUD Operations, Prisma, Vector SQL)
 ├── routes/         # RBAC-protected route definitions
-├── schema/         # Zod schemas for AI and Auth validation
-├── services/       # Core Logic (Gemini API, RAG, Auth flows)
-└── ...
+├── schema/         # Zod schemas for Auth, Blog, Knowledge Base, and AI validation
+└── services/       # Core Logic (CRUD Operations, Gemini API, RAG, Auth flows)
 ```
 
 ## 📡 API Endpoints
