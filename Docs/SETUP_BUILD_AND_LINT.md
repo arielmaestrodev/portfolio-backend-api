@@ -1,17 +1,17 @@
 # Guide: Modern Build & Linting Setup
 
-This document explains the modern development and production workflow implemented in this project, focusing on the **tsup** bundler and **ESLint v10** (Flat Config).
+This document explains the modern development and production workflow implemented in this project, focusing on the **tsdown** bundler and **ESLint v10** (Flat Config).
 
 ---
 
-## 🚀 1. The Build System (tsup)
+## 🚀 1. The Build System (tsdown)
 
-We use **tsup** to handle our production builds. It is a zero-config, extremely fast bundler powered by `esbuild`.
+We use **tsdown** to handle our production builds. It is a zero-config, extremely fast bundler.
 
-### Why we use tsup:
-1.  **ESM Resolution**: Node.js in ESM mode usually requires `.js` extensions on all imports. `tsup` handles this for us during the build, allowing us to keep our source code clean (no `.js` in imports).
+### Why we use tsdown:
+1.  **ESM Resolution**: Node.js in ESM mode usually requires `.js` extensions on all imports. `tsdown` handles this for us during the build, allowing us to keep our source code clean (no `.js` in imports).
 2.  **Path Aliases**: It natively resolves our `@/*` path shortcuts defined in `tsconfig.json`.
-3.  **Bundling**: It combines our project into a single, optimized file (`dist/server.js`), which is faster to load and deploy.
+3.  **Bundling**: It combines our project into a single, optimized file (`dist/server.mjs`), which is faster to load and deploy.
 
 ### Commands:
 ```powershell
@@ -49,7 +49,7 @@ To set up this environment from scratch, you need the following dev dependencies
 
 ```powershell
 # Install the Bundler
-npm install -D tsup
+npm install -D tsdown
 
 # Install ESLint v10 and TypeScript support
 npm install -D eslint typescript-eslint @eslint/js
@@ -90,7 +90,7 @@ To work correctly with the bundler and avoid the deprecated `baseUrl`, use the f
 ---
 
 ## 💡 Troubleshooting: ESM Paths
-If you ever see an error like `ERR_MODULE_NOT_FOUND` when running your production build, it is usually because of a path resolution issue. By using `tsup`, we avoid this entirely because the bundler "pre-links" all your files together into one.
+If you ever see an error like `ERR_MODULE_NOT_FOUND` when running your production build, it is usually because of a path resolution issue. By using `tsdown`, we avoid this entirely because the bundler "pre-links" all your files together into one (into `dist/server.mjs`).
 
 ---
 *This setup ensures that you can focus on writing code without worrying about Node.js module resolution quirks.*

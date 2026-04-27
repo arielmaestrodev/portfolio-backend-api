@@ -4,9 +4,9 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "build": "tsup src/server.ts --format esm --clean --minify",
+    "build": "tsdown src/server.ts --format esm --clean --minify",
     "dev": "tsx watch src/server.ts",
-    "start": "node dist/server.js",
+    "start": "node dist/server.mjs",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "lint": "eslint .",
@@ -42,8 +42,7 @@
     "@typescript-eslint/parser": "^8.59.0",
     "eslint": "^10.2.1",
     "prisma": "^7.8.0",
-    "tsc-alias": "^1.8.16",
-    "tsup": "^8.5.1",
+    "tsdown": "^0.21.10",
     "tsx": "^4.21.0",
     "typescript": "^6.0.2",
     "typescript-eslint": "^8.59.0"

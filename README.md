@@ -81,6 +81,6 @@ npm run db:generate
 # 2. Build for production
 npm run build
 
-# 3. Start server
+# 3. Start server (runs dist/server.mjs)
 npm start
 ```
