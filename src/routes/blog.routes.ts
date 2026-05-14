@@ -17,6 +17,6 @@ router.get("/v1/post/:id", blogController.getBlog);
 // Private Routes (Require Authentication & Admin Role)
 router.post("/v1/create-post", auth.execute, permittedRole([Role.ADMIN]), validateSchema(createBlogSchema), blogController.createBlog);
 router.post("/v1/update-post", auth.execute, permittedRole([Role.ADMIN]), validateSchema(updateBlogSchema), blogController.updateBlog);
-router.delete("/v1/delete-post/:id", auth.execute, permittedRole([Role.ADMIN]), blogController.deleteBlog);
+router.post("/v1/delete-post", auth.execute, permittedRole([Role.ADMIN]), blogController.deleteBlog);
 
 export default router;
