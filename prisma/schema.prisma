@@ -31,6 +31,7 @@ model User {
   role             Role      @default(USER) // default value from enum Role "USER"
   tokens           Token[]
   blogs            Blog[]
+  comments         Comment[]
 }
 
 model Blog {
@@ -47,9 +48,23 @@ model Blog {
   embedding Unsupported("vector(768)")? // Gemini embedding dimension is 768
 
   authorId  String
-  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments  Comment[]
 
   @@index([slug])
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  blogId    String
+  blog      Blog     @relation(fields: [blogId], references: [id], onDelete: Cascade)
 }
 
 model Token {

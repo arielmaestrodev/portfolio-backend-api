@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
 import { CreateBlogService, UpdateBlogService, DeleteBlogService, GetBlogService, GetAllBlogsService } from "@/services/blog";
+import { CreateCommentService } from "@/services/blog/comment/create-comment-service";
+import { GetCommentsByBlogService } from "@/services/blog/comment/get-comments-service";
+import { DeleteCommentService } from "@/services/blog/comment/delete-comment-service";
 
 export class BlogController {
   // Create Blog
@@ -39,6 +42,32 @@ export class BlogController {
   // Get All Blogs
   public getAllBlogs = async (req: Request, res: Response) => {
     const result = await GetAllBlogsService();
+    return res.status(result.code).json(result);
+  };
+
+  // --- Blog Comment Methods ---
+
+  public postComment = async (req: Request, res: Response) => {
+    const loggedUserId = (req as any).user?.sub;
+    const { blogId, content, userId } = req.body;
+    
+    const result = await CreateCommentService(userId, loggedUserId, blogId, content);
+    return res.status(result.code).json(result);
+  };
+
+  public getComments = async (req: Request, res: Response) => {
+    const blogId = req.params.blogId as string;
+    const result = await GetCommentsByBlogService(blogId);
+    return res.status(result.code).json(result);
+  };
+
+  public deleteComment = async (req: Request, res: Response) => {
+    const loggedUserId = (req as any).user?.sub;
+    const isAdmin = (req as any).user?.role === "ADMIN";
+    const id = req.params.id as string;
+    const { userId } = req.body;
+
+    const result = await DeleteCommentService(id, userId, loggedUserId, isAdmin);
     return res.status(result.code).json(result);
   };
 }
