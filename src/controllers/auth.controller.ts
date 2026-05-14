@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { SignupUserService, LoginCredentialsService, VerifyEmailService, RefreshTokenService, ResendEmailVerificationService } from "@/services/auth";
+import { SignupUserService, LoginCredentialsService, VerifyEmailService, RefreshTokenService, ResendEmailVerificationService, GetMeService } from "@/services/auth";
 import { TokenExpiry, toMilliseconds } from "@/lib/jwt";
 import { ENV } from "@/config/env";
 
@@ -72,6 +72,13 @@ export class AuthController {
   public resendEmailVerification = async (req: Request, res: Response) => {
     const { email } = req.body ?? {};
     const result = await ResendEmailVerificationService(email);
+    return res.status(result.code).json(result);
+  };
+
+  // Get Current User Session
+  public me = async (req: Request, res: Response) => {
+    const userId = (req as any).user?.sub;
+    const result = await GetMeService(userId);
     return res.status(result.code).json(result);
   };
 }
