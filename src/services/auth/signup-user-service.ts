@@ -27,7 +27,7 @@ export async function SignupUserService(name: string, email: string, password: s
     await tokenRepository.createEmailVerificationToken({ userId: created.id, token, expiresAt });
     
     // Updated path to include /api/auth/v1 for backend testing
-    const emailVerificationURL = `${process.env.BACKEND_URL}/api/auth/v1/verify-email?token=${encodeURIComponent(token)}`; 
+    const emailVerificationURL = `${process.env.FRONTEND_URL}/verify-email?token=${encodeURIComponent(token)}`; 
 
     // Format Email HTML
     const html = renderTemplate("verify-email.html", {
