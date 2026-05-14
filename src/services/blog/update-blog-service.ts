@@ -1,14 +1,8 @@
 import { BlogRepository, BlogData } from "@/repositories/blog.repository";
 import { generateEmbedding } from "@/services/ai/core/gemini-service";
+import { UpdateBlogInput } from "@/schema/blog";
 
-interface UpdateBlogData {
-  id: string;
-  authorId: string; // The ID of the user attempting the update
-  title?: string;
-  content?: string;
-  excerpt?: string;
-  category?: string[];
-}
+type UpdateBlogData = UpdateBlogInput & { authorId: string };
 
 export async function UpdateBlogService(data: UpdateBlogData) {
   const blogRepository = new BlogRepository();

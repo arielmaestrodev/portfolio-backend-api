@@ -1,11 +1,8 @@
 import { BlogRepository } from "@/repositories/blog.repository";
 import { generateEmbedding } from "@/services/ai/core/gemini-service";
+import { CreateBlogInput } from "@/schema/blog";
 
-interface CreateBlogData {
-  title: string;
-  content: string;
-  excerpt?: string;
-  category?: string[];
+type CreateBlogData = CreateBlogInput & {
   authorId: string;
 }
 
@@ -13,6 +10,11 @@ export async function CreateBlogService(data: CreateBlogData) {
   const blogRepository = new BlogRepository();
 
   try {
+    // Verify ownership
+    if (data.authorId !== data.userId) {
+      return { code: 403, status: "error", message: "Unauthorized to create this content!" };
+    }
+
     const slug = data.title
       .toLowerCase()
       .trim()

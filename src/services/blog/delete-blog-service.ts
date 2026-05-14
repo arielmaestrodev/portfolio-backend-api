@@ -1,11 +1,19 @@
 import { BlogRepository } from "@/repositories/blog.repository";
+import { DeleteBlogInput } from "@/schema/blog";
 
-export async function DeleteBlogService(id: string, authorId: string) {
+type DeleteBlogData = DeleteBlogInput & { authorId: string };
+
+export async function DeleteBlogService({ id, userId, authorId }: DeleteBlogData) {
   const blogRepository = new BlogRepository();
 
   try {
+    // Verify ownership
+    if (authorId !== userId) {
+      return { code: 403, status: "error", message: "Unauthorized to delete this post!" };
+    }
+
     const existing = await blogRepository.findById(id);
-    
+
     if (!existing) {
       return { code: 404, status: "error", message: "Blog post not found" };
     }

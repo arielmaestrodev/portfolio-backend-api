@@ -1,9 +1,3 @@
-import { z } from "zod";
-import { createBlogSchema } from "./create-blog.schema";
-import { updateBlogSchema } from "./update-blog.schema";
-
-export * from "./create-blog.schema";
-export * from "./update-blog.schema";
-
-export type CreateBlogInput = z.infer<typeof createBlogSchema>["body"];
-export type UpdateBlogInput = z.infer<typeof updateBlogSchema>["body"];
+export { createBlogSchema, type CreateBlogInput } from "@/schema/blog/create-blog.schema";
+export { updateBlogSchema, type UpdateBlogInput } from "@/schema/blog/update-blog.schema";
+export { deleteBlogSchema, type DeleteBlogInput } from "@/schema/blog/delete-blog.schema";
