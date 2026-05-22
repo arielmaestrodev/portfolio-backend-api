@@ -120,3 +120,60 @@ Go to your GitHub Repository -> **Settings** -> **Secrets and variables** -> **A
 - `SSH_HOST`: VPS IP Address (`72.62.64.176`)
 - `SSH_USER`: `root`
 - `SSH_PRIVATE_KEY`: The content of your private key from [SETUP_SSH_KEY.md](SETUP_SSH_KEY.md)
+
+## 6. Setup Domain & SSL
+
+1. **Configure DNS**: Add an **A Record** in your domain provider's DNS settings, pointing `api` (for `api.cloomero.cloud`) to your VPS IP (`72.62.64.176`).
+
+2. **Create Nginx Configuration**:
+   - SSH into your VPS and navigate to the sites-available directory:
+     ```bash
+     cd /etc/nginx/sites-available
+     ```
+   - Create a new configuration file (it's best practice to name it after your domain):
+     ```bash
+     nano api.cloomero.cloud
+     ```
+   - Paste the following server block configuration:
+     ```nginx
+     server {
+         listen 80;
+         server_name api.cloomero.cloud;
+
+         location / {
+             proxy_pass http://127.0.0.1:8000;
+
+             proxy_set_header Host $host;
+             proxy_set_header X-Real-IP $remote_addr;
+             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+             proxy_set_header X-Forwarded-Proto $scheme;
+         }
+     }
+     ```
+     *(Save by pressing Ctrl + X, then Y, and Enter)*
+
+3. **Enable the Site Configuration**:
+   Create a symlink to `sites-enabled`:
+   ```bash
+   sudo ln -s /etc/nginx/sites-available/api.cloomero.cloud /etc/nginx/sites-enabled/
+   ```
+
+4. **Restart Nginx**:
+   Apply the changes by restarting the service:
+   ```bash
+   sudo systemctl restart nginx
+   ```
+
+5. **Verify DNS Propagation**:
+   Check if your domain successfully points to your IP address using [whatsmydns.net](https://www.whatsmydns.net/).
+
+6. **Add SSL Certificate (HTTPS)**:
+   Run Certbot to automatically fetch and configure a free SSL certificate:
+   ```bash
+   sudo certbot --nginx -d api.cloomero.cloud
+   ```
+   *Follow the on-screen prompts to complete the setup.*
+
+7. **Verify SSL Configuration**:
+   - Check if `/etc/nginx/sites-enabled/api.cloomero.cloud` has been updated with the SSL configurations by Certbot.
+   - Open [https://api.cloomero.cloud](https://api.cloomero.cloud) in your browser. You should see a green padlock indicating the connection is secure.
