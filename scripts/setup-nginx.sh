@@ -25,7 +25,7 @@ server {
   listen 80;
   listen [::]:80;
 
-  server_name localhost;
+  server_name api.cloomero.cloud;
 
   location / {
     proxy_pass "http://localhost:8000/";

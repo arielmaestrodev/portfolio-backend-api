@@ -1,4 +1,4 @@
-# Stage 1: Base stage with Node.js Alpine image (cached layer if no changes)
+# Stage 1: Base stage with Node.js Alpine image
 FROM node:20-alpine AS builder
 
 # Install libc6-compat for compatibility and globally install specific npm version
@@ -8,35 +8,42 @@ RUN apk add --no-cache libc6-compat && \
 # Set the working directory for subsequent instructions
 WORKDIR /builder
 
-# Copy package.json and npm-lock.yaml to leverage Docker cache
+# Copy package.json and package-lock.json to leverage Docker cache
 COPY package.json package-lock.json ./
 
-# Install dependencies as per lock file without making updates
+# Install all dependencies (including devDependencies) to build the app and generate Prisma client
 RUN npm install --frozen-lockfile
 
 # Copy the rest of the application code
 COPY . .
 
+# Generate Prisma Client
+RUN npm run db:generate
+
 # Build the application
 RUN npm run build
 
-# Stage 2: Runner stage starts from the nginx:alpine image
-FROM nginx:alpine AS runner
+# Stage 2: Runner stage
+FROM node:20-alpine AS runner
 
 # Set the working directory in the container
-WORKDIR /usr/share/nginx/html
+WORKDIR /app
 
-# Remove the default Nginx static assets
-RUN rm -rf ./*
+# Copy package files
+COPY package.json package-lock.json ./
+
+# Install only production dependencies
+RUN npm install --omit=dev --frozen-lockfile
+
+# Copy the generated Prisma Client and schema from builder
+COPY --from=builder /builder/prisma ./prisma
+RUN npx --yes prisma generate
 
 # Copy built artifacts from the builder stage
-COPY --from=builder /builder/dist /usr/share/nginx/html
+COPY --from=builder /builder/dist ./dist
 
-# Copy the Nginx configuration file
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# Inform Docker that the container is listening on port 80 at runtime
-EXPOSE 80
+# Inform Docker that the container is listening on port 8000 at runtime
+EXPOSE 8000
 
 # Define the command to run the app
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+CMD ["npm", "start"]
