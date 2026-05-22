@@ -4,8 +4,8 @@ import { generateEmbedding, generateChatResponse } from "../core/gemini-service"
 import { Content } from "@google/generative-ai";
 
 export async function AskAIService(question: string, history: Content[] = []) {
-  const kbRepo = new KnowledgeBaseRepository();
-  const blogRepo = new BlogRepository();
+  const knowledgeBaseRepository = new KnowledgeBaseRepository();
+  const blogRepository = new BlogRepository();
 
   try {
     // 1. Generate embedding for the question
@@ -14,8 +14,8 @@ export async function AskAIService(question: string, history: Content[] = []) {
 
     // 2. Search for similar context in both repositories
     const [relevantKB, relevantBlogs] = await Promise.all([
-      kbRepo.searchSimilar(vectorStr, 3),
-      blogRepo.searchSimilar(vectorStr, 3)
+      knowledgeBaseRepository.searchSimilar(vectorStr, 3),
+      blogRepository.searchSimilar(vectorStr, 3)
     ]);
 
     // 3. Format combined context

@@ -38,7 +38,7 @@ app.use((req: Request, res: Response) => {
 });
 
 // --- Global Error Handler ---
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
   console.error('🔥 Global Error Hook:', err.message);
   
   const statusCode = err.status || 500;

@@ -1,5 +1,5 @@
 import { KnowledgeBaseRepository } from "@/repositories/knowledgebase.repository";
-import { generateEmbedding } from "../core/gemini-service";
+import { generateEmbedding } from "@/services/ai/core/gemini-service";
 
 interface UpdateKnowledgeBaseData {
   id: string;
