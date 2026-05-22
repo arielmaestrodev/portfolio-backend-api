@@ -26,7 +26,7 @@ Docker Compose:
 docker compose up -d
 docker compose down
 
-4. Setup VPS and Docker Hub
+4. Setup VPS, Docker Hub, and SSH Key
 - Buying VPS (Host with Hostinger): https://hostinger.com/ph
 - Setup Dockerhub: https://hub.docker.com/
  - Create Repository
@@ -40,6 +40,18 @@ docker compose down
  - Run the Nginx Setup Script: sh setup-nginx.sh
 - Docker Login in VPS:
  - command: docker login -u {username} then enter the Access Token Password
+- Setup SSH Key for the VPS (Will be using for the CI/CD) - Guide: portfolio-backend-api\Docs\SETUP_SSH_KEY.md
+  - Navigate the SSH Key in the Hostinger (Stop until 1. Copy the content of your public key.)
+  - Follow the Guide until you can get the SSH Key Public then paste it back to the Hostinger
 
  5. CI/CD with Github Action Setup
- - 
+ - Go to VPS then mkdir docker
+ - Setup portfolio-backend-api\.github\workflows\deploy.yaml
+ - Setup Docker Compose (This one connected to the DockerHub unlike the other Docker is for internal network only for testing this one is for the production - so we need to make sure port here is different/unique than the other app): portfolio-backend-api\docker\docker-compose.yaml
+ - Setup Scripts to automate process from Server -> CI/CD (Github Actions) -> DockerHub -> Deploy: portfolio-backend-api\scripts\deploy.sh
+ - Go to GitHub Repository then Settings -> Secrets and variables -> Actions -> Add Repository secrets
+  - DOCKERHUB_USERNAME: Your username in Docker Hub
+  - DOCKERHUB_TOKEN: Generated Access Token in Docker Hub
+  - SSH_HOST: IP Address
+  - SSH_USER: root
+  - SSH_PRIVATE_KEY: Copy the content of your private key -> portfolio-backend-api\Docs\SETUP_SSH_KEY.md (Copy the content of your private key)

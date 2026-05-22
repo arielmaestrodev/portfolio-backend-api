@@ -1,0 +1,7 @@
+name: portfolio-backend-api
+
+services:
+  app:
+    image: itsarielbatoon/portfolio-backend-api
+    ports:
+      - '8000:8000'
