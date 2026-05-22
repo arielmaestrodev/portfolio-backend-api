@@ -46,6 +46,7 @@ docker compose down
 
  5. CI/CD with Github Action Setup
  - Go to VPS then mkdir docker
+ - Add your .env to VPS: Go to VPS then mkdir env then cd env and mkdir portfolio-backend-api then cd to portfolio-backend-api after that nano .env and paste the content of .env from your local
  - Setup portfolio-backend-api\.github\workflows\deploy.yaml
  - Setup Docker Compose (This one connected to the DockerHub unlike the other Docker is for internal network only for testing this one is for the production - so we need to make sure port here is different/unique than the other app): portfolio-backend-api\docker\docker-compose.yaml
  - Setup Scripts to automate process from Server -> CI/CD (Github Actions) -> DockerHub -> Deploy: portfolio-backend-api\scripts\deploy.sh

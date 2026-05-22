@@ -4,4 +4,7 @@ services:
   app:
     image: itsarielbatoon/portfolio-backend-api
     ports:
-      - '8000:8000'
+      - "8000:8000"
+    env_file:
+      - /root/env/portfolio-backend-api/.env
+    restart: unless-stopped
