@@ -177,3 +177,28 @@ Go to your GitHub Repository -> **Settings** -> **Secrets and variables** -> **A
 7. **Verify SSL Configuration**:
    - Check if `/etc/nginx/sites-enabled/api.cloomero.cloud` has been updated with the SSL configurations by Certbot.
    - Open [https://api.cloomero.cloud](https://api.cloomero.cloud) in your browser. You should see a green padlock indicating the connection is secure.
+
+## 7. Cross-Domain Cookie Configuration (Important)
+
+If you are hosting your frontend and backend on different subdomains (e.g., `www.cloomero.cloud` and `api.cloomero.cloud`), you must explicitly configure your authentication cookies to be shared across the entire root domain.
+
+Update your cookie configuration in the backend:
+
+**File:** `src/controllers/auth.controller.ts`
+```typescript
+private setAuthCookies(res: Response, tokens: { accessToken: string; refreshToken: string }) {
+  const isProduction = ENV.NODE_ENV === "production";
+  const domain = isProduction ? ".cloomero.cloud" : undefined;
+
+  res.cookie("accessToken", tokens.accessToken, {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+    domain,
+    maxAge: toMilliseconds(TokenExpiry.ACCESS_TOKEN_EXPIRES),
+  });
+
+  // Remember to do the same for the refreshToken!
+}
+```
+*Note: You must also pass the `{ domain }` parameter inside the `res.clearCookie` options in your `logout` function so the cookie is successfully cleared when a user logs out!*

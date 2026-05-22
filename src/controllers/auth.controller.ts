@@ -7,11 +7,13 @@ export class AuthController {
   // Helper to set cookies
   private setAuthCookies(res: Response, tokens: { accessToken: string; refreshToken: string }) {
     const isProduction = ENV.NODE_ENV === "production";
+    const domain = isProduction ? ".cloomero.cloud" : undefined;
 
     res.cookie("accessToken", tokens.accessToken, {
       httpOnly: true,
       secure: isProduction,
       sameSite: isProduction ? "none" : "lax",
+      domain,
       maxAge: toMilliseconds(TokenExpiry.ACCESS_TOKEN_EXPIRES),
     });
 
@@ -19,6 +21,7 @@ export class AuthController {
       httpOnly: true,
       secure: isProduction,
       sameSite: isProduction ? "none" : "lax",
+      domain,
       maxAge: toMilliseconds(TokenExpiry.REFRESH_TOKEN_EXPIRES),
     });
   }
@@ -63,8 +66,11 @@ export class AuthController {
 
   // Handle Logout
   public logout = (req: Request, res: Response) => {
-    res.clearCookie("accessToken");
-    res.clearCookie("refreshToken");
+    const isProduction = ENV.NODE_ENV === "production";
+    const domain = isProduction ? ".cloomero.cloud" : undefined;
+
+    res.clearCookie("accessToken", { domain });
+    res.clearCookie("refreshToken", { domain });
     return res.status(200).json({ code: 200, status: "success", message: "Logged out successfully" });
   };
 
