@@ -94,9 +94,13 @@ Follow the [SETUP_SSH_KEY.md](SETUP_SSH_KEY.md) guide.
 ## 5. CI/CD with GitHub Actions
 
 ### Server Environment Setup
-1. Go to your VPS and create a Docker folder:
+1. Go to your VPS and create a Docker folder then copy the content of `docker` folder to it:
    ```bash
    mkdir docker
+   cd docker
+   nano docker-compose.yml
+   # Paste the content of docker/docker-compose.yml
+   # Save by pressing Ctrl + X, then Y, and Enter
    ```
 2. Add your `.env` to the VPS:
    ```bash
