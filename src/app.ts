@@ -20,7 +20,7 @@ app.use(cookieParser());
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({
     status: 'success',
-    message: `${ENV.APP_NAME} instance is healthy`,
+    message: `${ENV.APP_NAME} instance is healthy!`,
     timestamp: new Date().toISOString(),
     environment: ENV.NODE_ENV
   });
