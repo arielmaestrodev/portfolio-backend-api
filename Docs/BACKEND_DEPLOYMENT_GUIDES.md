@@ -163,6 +163,10 @@ Go to your GitHub Repository -> **Settings** -> **Secrets and variables** -> **A
    ```
 
 4. **Restart Nginx**:
+   Test Nginx configuration:
+   ```bash
+   sudo nginx -t
+   ```
    Apply the changes by restarting the service:
    ```bash
    sudo systemctl restart nginx
