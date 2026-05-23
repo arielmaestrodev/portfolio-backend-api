@@ -99,7 +99,7 @@ Follow the [SETUP_SSH_KEY.md](SETUP_SSH_KEY.md) guide.
    mkdir docker
    cd docker
    nano docker-compose.yml
-   # Paste the content of docker/docker-compose.yml
+   # Paste the content of docker/docker-compose.yaml
    # Save by pressing Ctrl + X, then Y, and Enter
    ```
 2. Add your `.env` to the VPS:
